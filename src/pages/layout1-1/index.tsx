@@ -1,0 +1,1 @@
+export default () => <span>layout 1-1</span>

@@ -1,0 +1,19 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+  display: flex;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  width: 120px;
+}
+
+.content {
+  flex: 1;
+}
+
+.app_layout {
+  display: flex;
+}
