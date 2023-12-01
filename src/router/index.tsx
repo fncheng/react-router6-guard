@@ -8,7 +8,7 @@ import { lazy } from 'react';
 import RouterBeforeEach from './RouterBeforeEach';
 import Login from '../pages/login';
 import { RouteConfig, RouteConfigWithFullPath } from './type';
-import { generateRoutesWithFullPath, handleAsyncRoutes } from './utils';
+import { generateRoutesWithFullPath, normalizeRouteRecord } from './utils';
 
 const modules: Record<string, () => Promise<any>> = import.meta.glob('../pages/**/*.tsx');
 
@@ -26,10 +26,14 @@ export const routes: RouteConfig[] = [
       <RouterBeforeEach>
         <Login />
       </RouterBeforeEach>
-    )
+    ),
+    meta: {
+      name: '登录页'
+    }
   },
   {
     path: '/',
+    redirect: 'about',
     errorElement: <Error />,
     element: (
       <RouterBeforeEach>
@@ -37,15 +41,20 @@ export const routes: RouteConfig[] = [
       </RouterBeforeEach>
     ),
     children: [
-      { path: '', element: <span>/</span>, meta: { requireAuth: true } },
+      // { path: '', redirect: 'about', meta: { requireAuth: true } },
       { path: 'about', element: <About />, meta: { requireAuth: true } },
       { path: 'test', element: <Test /> },
       {
         path: 'layout',
         // element: <Layout />,
         componentPath: 'pages/layout1/index',
+        redirect: '1',
         children: [
-          { path: '1', componentPath: 'pages/layout1-1/index', meta: { requireAuth: true } },
+          {
+            path: '1',
+            componentPath: 'pages/layout1-1/index',
+            meta: { requireAuth: true }
+          },
           { path: '2', componentPath: 'pages/layout1-2/index', meta: { requireAuth: true } },
           {
             path: '3',
@@ -65,18 +74,17 @@ export const routes: RouteConfig[] = [
 const routesWithFullPath = generateRoutesWithFullPath(routes);
 console.log('routesWithFullPath: ', routesWithFullPath);
 
-let rotuesMap = new Map<string, Pick<RouteConfigWithFullPath, 'meta' | 'fullPath' | 'path'>>();
+let rotuesMap = new Map<
+  string,
+  Pick<RouteConfigWithFullPath, 'meta' | 'fullPath' | 'path' | 'redirect'>
+>();
 const handleRoutesToMap = (routes: RouteConfigWithFullPath[]) => {
   routes.forEach((route) => {
     if (route.fullPath) {
       if (route.children) {
         handleRoutesToMap(route.children);
       }
-      rotuesMap.set(route.fullPath, {
-        path: route.path,
-        fullPath: route.fullPath,
-        meta: route.meta
-      });
+      rotuesMap.set(route.fullPath, route);
     }
     return;
   });
@@ -84,8 +92,10 @@ const handleRoutesToMap = (routes: RouteConfigWithFullPath[]) => {
 };
 
 handleRoutesToMap(routesWithFullPath);
+console.log('rotuesMap: ', rotuesMap);
 
-const asyncRoutes = handleAsyncRoutes(routes);
+
+const asyncRoutes = normalizeRouteRecord(routesWithFullPath);
 
 const router = createBrowserRouter(asyncRoutes);
 

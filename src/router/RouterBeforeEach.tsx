@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, redirect, useLocation } from 'react-router-dom';
 import { globalContext } from '../App';
 import { rotuesMap } from '.';
 
@@ -30,7 +30,15 @@ const RouterBeforeEach: React.FC<RouterBeforeEachProps> = ({ children }) => {
     // 没有则跳转至指定页
     return <Navigate to='/unpermission' />;
   }
-
+  if (to?.redirect) {
+    // 这里需要判断redirect是绝对路径，还是相对路径
+    if (to.redirect.startsWith('/')) {
+      return <Navigate to={to.redirect} />;
+    } else {
+      const redirect = `${to.fullPath}/${to.redirect}`.replace(/\/+/, '/');
+      return <Navigate to={redirect} />;
+    }
+  }
   return children;
 };
 export default RouterBeforeEach;
