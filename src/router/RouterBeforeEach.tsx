@@ -1,13 +1,18 @@
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { globalContext } from '../App';
-import { routes } from '.';
+import { rotuesMap } from '.';
 
-const RouterBeforeEach = ({ children }) => {
+type RouterBeforeEachProps = {
+  children: JSX.Element;
+};
+
+const RouterBeforeEach: React.FC<RouterBeforeEachProps> = ({ children }) => {
   const { isLogin } = useContext(globalContext);
   const location = useLocation();
-  console.log('to: ', location);
-  const to = routes.find((route) => route.path === location.pathname);
+
+  const to = rotuesMap.get(location.pathname);
+  console.log('to: ', to);
 
   // 如果未登录，且去的页面不是登录页，则重定向到登录页
   if (!isLogin && to?.path !== '/login') {
@@ -19,7 +24,7 @@ const RouterBeforeEach = ({ children }) => {
     return <Navigate to='/' />;
   }
   // 需要鉴权的页面
-  if (to?.meta?.requireAuth) {
+  if (to?.meta?.requireAuth && !isLogin) {
     // 判断有没有这个页面的权限
     // ...
     // 没有则跳转至指定页
