@@ -33,7 +33,6 @@ export const routes: RouteConfig[] = [
   },
   {
     path: '/',
-    redirect: 'about',
     errorElement: <Error />,
     element: (
       <RouterBeforeEach>
@@ -41,7 +40,7 @@ export const routes: RouteConfig[] = [
       </RouterBeforeEach>
     ),
     children: [
-      // { path: '', redirect: 'about', meta: { requireAuth: true } },
+      { path: '', redirect: 'about' },
       { path: 'about', element: <About />, meta: { requireAuth: true } },
       { path: 'test', element: <Test /> },
       {
@@ -93,7 +92,6 @@ const handleRoutesToMap = (routes: RouteConfigWithFullPath[]) => {
 
 handleRoutesToMap(routesWithFullPath);
 console.log('rotuesMap: ', rotuesMap);
-
 
 const asyncRoutes = normalizeRouteRecord(routesWithFullPath);
 

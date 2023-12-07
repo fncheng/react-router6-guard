@@ -31,6 +31,9 @@ export const normalizeRouteRecord = (routes: RouteConfig[]): any =>
  */
 export const generateRoutesWithFullPath = (routes: RouteConfigWithFullPath[], parentPath = '') => {
   return routes.map((route) => {
+    if (route.redirect) {
+      route.fullPath = `${parentPath}/${route.redirect}`;
+    }
     if (route.path === '*') {
       return route;
     }
