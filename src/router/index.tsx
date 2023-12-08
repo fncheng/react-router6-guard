@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom';
 import Error from '../pages/Error';
 import NotFound from '../pages/NotFound';
 import About from '../pages/About';
@@ -11,8 +11,6 @@ import { RouteConfig, RouteConfigWithFullPath } from './type';
 import { generateRoutesWithFullPath, normalizeRouteRecord } from './utils';
 
 const modules: Record<string, () => Promise<any>> = import.meta.glob('../pages/**/*.tsx');
-
-console.log('modules: ', modules);
 
 export const createLazyComponent = (path: string) => {
   const Component = lazy(modules[`../${path}.tsx`]);
@@ -63,6 +61,39 @@ export const routes: RouteConfig[] = [
               { path: '2', componentPath: 'pages/layout1-3-2/index', meta: { requireAuth: true } }
             ]
           }
+        ]
+      }
+    ]
+  },
+  {
+    path: '/about',
+    element: 'about'
+  },
+  {
+    path: '/settings',
+    element: (
+      <RouterBeforeEach>
+        <div>
+          settings <Outlet />
+        </div>
+      </RouterBeforeEach>
+    ),
+    children: [
+      {
+        index: true,
+        element: <Navigate to='profile' />
+      },
+      {
+        path: 'profile',
+        element: (
+          <div>
+            profile <Outlet />
+          </div>
+        ),
+        children: [
+          { index: true, element: <Navigate to='a' /> },
+          { path: 'a', element: <div>aaa</div> },
+          { path: 'a', element: <div>aaa</div> }
         ]
       }
     ]

@@ -10,6 +10,7 @@ type RouterBeforeEachProps = {
 const RouterBeforeEach: React.FC<RouterBeforeEachProps> = ({ children }) => {
   const { isLogin } = useContext(globalContext);
   const location = useLocation();
+  console.log('location: ', location);
 
   const to = rotuesMap.get(location.pathname);
   console.log('to: ', to);

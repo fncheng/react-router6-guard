@@ -5,8 +5,7 @@ import {
   Route,
   BrowserRouter as Router,
   RouterProvider,
-  Routes,
-  useNavigate
+  Routes
 } from 'react-router-dom';
 import { Suspense, createContext, useState } from 'react';
 import router from './router';
@@ -26,29 +25,47 @@ export default function App() {
     const storeValue = localStorage.getItem('isLogin');
     return storeValue ? JSON.parse(storeValue) : false;
   });
-  console.log('localStorage.getItem( ', localStorage.getItem('isLogin'));
 
   return (
     <div className='App'>
       <globalContext.Provider value={{ isLogin, setLogin }}>
-        <Router>
-          <Suspense fallback={<div>loading...</div>}>
-            {/* <RouterProvider router={router} /> */}
-            <Routes>
-              <Route path='/' element={<Navigate to='/dashboard' />}></Route>
-              <Route path='/dashboard' element={'about'} />
-              <Route path='/settings' element={<div>settings <Outlet /></div>}>
-                {/* 这里为了解决重定向需要新增一条带index的路由 */}
-                <Route index element={<Navigate to='profile' />} />
-                <Route path='profile' element={<div>profile <Outlet /></div>}>
-                  <Route path='a' element={'aaa'}></Route>
-                  <Route path='b' element={'bbb'}></Route>
+        {false && (
+          <Router>
+            <Suspense fallback={<div>loading...</div>}>
+              <Routes>
+                <Route path='/' element={<Navigate to='/dashboard' />}></Route>
+                <Route path='/dashboard' element={'dashboard'} />
+                <Route path='/about' element={'about'} />
+                <Route
+                  path='/settings'
+                  element={
+                    <div>
+                      settings <Outlet />
+                    </div>
+                  }
+                >
+                  {/* 这里为了解决重定向需要新增一条带index的路由 */}
+                  <Route index element={<Navigate to='profile' />} />
+                  <Route
+                    path='profile'
+                    element={
+                      <div>
+                        profile <Outlet />
+                      </div>
+                    }
+                  >
+                    <Route path='a' element={'aaa'}></Route>
+                    <Route path='b' element={'bbb'}></Route>
+                  </Route>
+                  <Route path='profile2' element={'profile2'} />
                 </Route>
-                <Route path='profile2' element={'profile2'} />
-              </Route>
-            </Routes>
-          </Suspense>
-        </Router>
+              </Routes>
+            </Suspense>
+          </Router>
+        )}
+        <Suspense fallback={<div>loading...</div>}>
+          <RouterProvider router={router} />
+        </Suspense>
       </globalContext.Provider>
     </div>
   );
