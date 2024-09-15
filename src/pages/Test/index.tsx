@@ -1,1 +1,3 @@
-export default () => <span>Test</span>;
+const Test = () => <span>Test</span>;
+
+export default Test;
