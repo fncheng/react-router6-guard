@@ -1,7 +1,6 @@
 import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom';
 import Error from '../pages/Error';
 import NotFound from '../pages/NotFound';
-import About from '../pages/About';
 import Test from '../pages/Test';
 import AppLayout from '../pages/AppLayout';
 import { lazy } from 'react';
@@ -9,13 +8,17 @@ import RouterBeforeEach from './RouterBeforeEach';
 import Login from '../pages/login';
 import { RouteConfig, RouteConfigWithFullPath } from './type';
 import { generateRoutesWithFullPath, normalizeRouteRecord } from './utils';
+import { userLoader } from '../pages/About/userLoader.ts'
 
 const modules: Record<string, () => Promise<any>> = import.meta.glob('../pages/**/*.tsx');
 
 export const createLazyComponent = (path: string) => {
   const Component = lazy(modules[`../${path}.tsx`]);
   return <Component key={path} />;
-};
+}
+
+const About = lazy(() => import('../pages/About/index.tsx'))
+const About1 = lazy(() => import('../pages/About/About1.tsx'))
 
 export const routes: RouteConfig[] = [
   {
@@ -39,7 +42,17 @@ export const routes: RouteConfig[] = [
     ),
     children: [
       { path: '', redirect: 'about' },
-      { path: 'about', element: <About />, meta: { requireAuth: true } },
+      {
+        path: 'about1',
+        element: <About1 />
+      },
+      {
+        id: 'user',
+        path: 'about',
+        element: <About />,
+        meta: { requireAuth: true },
+        loader: userLoader
+      },
       { path: 'test', element: <Test /> },
       {
         path: 'layout',
@@ -64,10 +77,6 @@ export const routes: RouteConfig[] = [
         ]
       }
     ]
-  },
-  {
-    path: '/about',
-    element: 'about'
   },
   {
     path: '/settings',
