@@ -41,7 +41,7 @@ export const routes: RouteConfig[] = [
       </RouterBeforeEach>
     ),
     children: [
-      { path: '', redirect: 'about' },
+      { path: '', element: <Navigate to='/test' /> },
       {
         path: 'about1',
         element: <About1 />

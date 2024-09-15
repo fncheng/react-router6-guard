@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.css'
 import {
   Navigate,
   Outlet,
@@ -6,25 +6,32 @@ import {
   BrowserRouter as Router,
   RouterProvider,
   Routes
-} from 'react-router-dom';
-import { Suspense, createContext, useState } from 'react';
-import router from './router';
+} from 'react-router-dom'
+import { Suspense, createContext, useState } from 'react'
+import router from './router'
+import { LoadingOutlined } from '@ant-design/icons'
 
 interface IGlobalContext {
-  isLogin: boolean;
-  setLogin: React.Dispatch<React.SetStateAction<boolean>>;
+  isLogin: boolean
+  setLogin: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const globalContext = createContext<IGlobalContext>({
   isLogin: JSON.parse(localStorage.getItem('isLogin') || 'false'),
   setLogin: () => {}
-});
+})
+
+const Loading = () => {
+  return <div style={{ display: 'flex', height: '100%', flex: 1 }}>
+    <LoadingOutlined />
+  </div>
+}
 
 export default function App() {
   const [isLogin, setLogin] = useState<boolean>(() => {
-    const storeValue = localStorage.getItem('isLogin');
-    return storeValue ? JSON.parse(storeValue) : false;
-  });
+    const storeValue = localStorage.getItem('isLogin')
+    return storeValue ? JSON.parse(storeValue) : false
+  })
 
   return (
     <div className='App'>
@@ -63,10 +70,10 @@ export default function App() {
             </Suspense>
           </Router>
         )}
-        <Suspense fallback={<div>loading...</div>}>
+        <Suspense fallback={<Loading />}>
           <RouterProvider router={router} />
         </Suspense>
       </globalContext.Provider>
     </div>
-  );
+  )
 }

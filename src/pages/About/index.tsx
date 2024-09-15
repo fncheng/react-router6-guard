@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
 import { Await, useLoaderData } from 'react-router-dom'
+import { LoadingOutlined } from '@ant-design/icons'
 
 interface UserData {
   number: boolean
@@ -14,7 +15,7 @@ const About: React.FC = () => {
   return (
     <main>
       <h1>Let's loading some data</h1>
-      <Suspense fallback={<div>Loading number...</div>}>
+      <Suspense fallback={<LoadingOutlined />}>
         <Await resolve={userLoaderData.number}>
           {(data) => {
             console.log('render data')
