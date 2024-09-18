@@ -1,21 +1,29 @@
 import { useEffect, useState } from "react";
 import { useNumber } from "./useNumber";
 import { LoadingOutlined } from "@ant-design/icons";
+import { useAbortRequest } from "@/hooks/useAbortController";
 
 const About1: React.FC = () => {
-    const [number, setNumber] = useState(0);
+    // const abortController = new AbortController();
+    // const { signal } = abortController;
 
-    const abortController = new AbortController();
-    const { signal } = abortController;
+    // const { signal } = useAbortController();
 
-    const getNumber = async () => {
-        const number = await useNumber(signal);
-        setNumber(number);
-    };
+    const { data: number, error, loading, run } = useAbortRequest(useNumber);
+    console.log("data: ", number, loading, error);
+
+    // const getNumber = async () => {
+    //     const number = await useNumber(signal);
+    //     setNumber(number);
+    // };
 
     useEffect(() => {
-        getNumber();
-        return () => abortController.abort()
+        // getNumber();
+
+        const abort = run();
+        return () => {
+            abort();
+        };
     }, []);
 
     console.log("render");

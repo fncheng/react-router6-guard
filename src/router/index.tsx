@@ -9,7 +9,6 @@ import { RouteConfig, RouteConfigWithFullPath } from "./type";
 import { generateRoutesWithFullPath, normalizeRouteRecord } from "./utils";
 import { userLoader } from "../pages/About/userLoader.ts";
 import { App1 } from "../App.tsx";
-import Home from "../pages/Home/index.tsx";
 import Layout1 from "@/pages/layout1/index.tsx";
 import Layout11 from "@/pages/layout1-1/index.tsx";
 import Layout2 from "@/pages/layout1-2/index.tsx";
@@ -18,9 +17,7 @@ import Layout131 from "@/pages/layout1-3-1/index.tsx";
 import Layout132 from "@/pages/layout1-3-2/index.tsx";
 import About1 from "../pages/About/About1.tsx";
 
-const modules: Record<string, () => Promise<any>> = import.meta.glob(
-    "../pages/**/*.tsx"
-);
+const modules: Record<string, () => Promise<any>> = import.meta.glob("../pages/**/*.tsx");
 
 export const createLazyComponent = (path: string) => {
     const Component = lazy(modules[`../pages/${path}.tsx`]);
@@ -29,6 +26,7 @@ export const createLazyComponent = (path: string) => {
 
 const About = lazy(() => import("../pages/About/index.tsx"));
 // const About1 = lazy(() => import("../pages/About/About1.tsx"));
+const Home = lazy(() => import("../pages/Home/index"));
 
 export const routes: RouteConfig[] = [
     {
@@ -46,11 +44,6 @@ export const routes: RouteConfig[] = [
         path: "/",
         errorElement: <Error />,
         element: <App1 />,
-        // element: (
-        //   <RouterBeforeEach>
-        //     <AppLayout />
-        //   </RouterBeforeEach>
-        // ),
         children: [
             { path: "", element: <Home /> },
             {
