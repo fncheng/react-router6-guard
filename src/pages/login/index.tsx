@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { globalContext } from '../../App';
 
@@ -6,6 +6,10 @@ export default () => {
   const { isLogin, setLogin } = useContext(globalContext);
   console.log('isLogin: ', isLogin);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLogin) navigate("/");
+  }, []);
   const handleLogin = () => {
     alert('login');
     setLogin(true);

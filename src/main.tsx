@@ -1,10 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
+import ReactDOM from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
+import router from "./router";
+import { GlobalProvider } from "./utils/GlobalContext";
+import { Suspense } from "react";
+import { Loading } from "./utils/Loading";
 
-const rootElement = document.getElementById('root')!;
+const rootElement = document.getElementById("root")!;
 const root = ReactDOM.createRoot(rootElement);
 
 root.render(
-    <App />
+    <GlobalProvider>
+        <Suspense fallback={<Loading />}>
+            <RouterProvider router={router} />
+        </Suspense>
+    </GlobalProvider>
 );

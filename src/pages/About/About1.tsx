@@ -1,30 +1,34 @@
-import { useEffect, useState } from 'react'
-import { useNumber } from './useNumber'
-import { LoadingOutlined } from '@ant-design/icons'
+import { useEffect, useState } from "react";
+import { useNumber } from "./useNumber";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const About1: React.FC = () => {
-  const [number, setNumber] = useState(0)
+    const [number, setNumber] = useState(0);
 
-  const getNumber = async () => {
-    const number = await useNumber()
-    setNumber(number)
-  }
+    const abortController = new AbortController();
+    const { signal } = abortController;
 
-  useEffect(() => {
-    getNumber()
-  }, [])
+    const getNumber = async () => {
+        const number = await useNumber(signal);
+        setNumber(number);
+    };
 
-  console.log('render')
-  return (
-    <main>
-      <h1>Let's loading some data</h1>
-      {number ? (
-        <div style={{ color: 'red' }}>Here is the number: {number}</div>
-      ) : (
-        <LoadingOutlined />
-      )}
-    </main>
-  )
-}
+    useEffect(() => {
+        getNumber();
+        return () => abortController.abort()
+    }, []);
 
-export default About1
+    console.log("render");
+    return (
+        <main>
+            <h1>Let's loading some data</h1>
+            {number ? (
+                <div style={{ color: "red" }}>Here is the number: {number}</div>
+            ) : (
+                <LoadingOutlined />
+            )}
+        </main>
+    );
+};
+
+export default About1;

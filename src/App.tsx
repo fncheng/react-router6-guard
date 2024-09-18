@@ -5,11 +5,14 @@ import {
   Route,
   BrowserRouter as Router,
   RouterProvider,
-  Routes
+  Routes,
+  useLocation,
+  useNavigate
 } from 'react-router-dom'
-import { Suspense, createContext, useState } from 'react'
+import { Suspense, createContext, useEffect, useState } from 'react'
 import router from './router'
-import { LoadingOutlined } from '@ant-design/icons'
+import AppLayout from './pages/AppLayout'
+import { Loading } from './utils/Loading'
 
 interface IGlobalContext {
   isLogin: boolean
@@ -21,17 +24,18 @@ export const globalContext = createContext<IGlobalContext>({
   setLogin: () => {}
 })
 
-const Loading = () => {
-  return <div style={{ display: 'flex', height: '100%', flex: 1 }}>
-    <LoadingOutlined />
-  </div>
-}
 
-export default function App() {
+
+export function App() {
   const [isLogin, setLogin] = useState<boolean>(() => {
     const storeValue = localStorage.getItem('isLogin')
     return storeValue ? JSON.parse(storeValue) : false
   })
+
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  
 
   return (
     <div className='App'>
@@ -76,4 +80,28 @@ export default function App() {
       </globalContext.Provider>
     </div>
   )
+}
+
+export function App1() {
+    const [isLogin, setLogin] = useState<boolean>(() => {
+        const storeValue = localStorage.getItem("isLogin");
+        return storeValue ? JSON.parse(storeValue) : false;
+    });
+
+    const location = useLocation();
+    const navigate = useNavigate();
+    console.log('location: ', location);
+
+    const handleRouteChange = () => {
+        console.log("------全局路由守卫------", isLogin);
+        if (!isLogin && location.pathname !== "/login") {
+            navigate("/login");
+        }
+    };
+
+    useEffect(() => {
+        handleRouteChange();
+    }, [location.pathname]);
+
+    return <AppLayout />;
 }
