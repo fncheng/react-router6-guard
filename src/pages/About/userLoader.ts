@@ -3,7 +3,9 @@ import { useNumber } from './useNumber'
 import { useName } from './useName'
 
 export const userLoader = async () => {
-  const number = useNumber()
-  const name = useName()
-  return defer({ number, name })
+  const abortController = new AbortController()
+  const { signal } = abortController
+  const number = useNumber(signal)
+  const name = useName(signal)
+  return defer({ number, name, abortController });
 }

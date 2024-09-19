@@ -1,15 +1,22 @@
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { Await, useLoaderData } from "react-router-dom";
 import { Loading } from "@/utils/Loading";
 
 interface UserData {
     number: boolean;
     name: string;
+    abortController: AbortController;
 }
 
 const About: React.FC = () => {
-    const userLoaderData = useLoaderData() as UserData;
-    console.log("userLoaderData: ", userLoaderData);
+    const { number, name, abortController } = useLoaderData() as UserData;
+
+    useEffect(()=>{
+        return ()=>{
+            abortController.abort();
+        }
+    },[])
+
 
     console.log("render");
 
@@ -17,7 +24,7 @@ const About: React.FC = () => {
         <main>
             <h1>Let's loading some data</h1>
             <Suspense fallback={<Loading />}>
-                <Await resolve={userLoaderData.number}>
+                <Await resolve={number}>
                     {(data) => {
                         console.log("render number");
                         return (
@@ -29,7 +36,7 @@ const About: React.FC = () => {
                 </Await>
             </Suspense>
             <Suspense fallback={<Loading />}>
-                <Await resolve={userLoaderData.name}>
+                <Await resolve={name}>
                     {(data) => {
                         console.log("render name");
                         return (
