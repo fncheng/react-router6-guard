@@ -5,10 +5,10 @@ import Test from "../pages/Test";
 import { lazy } from "react";
 import RouterBeforeEach from "./RouterBeforeEach";
 import Login from "../pages/login";
-import { RouteConfig, RouteConfigWithFullPath } from "./type";
-import { generateRoutesWithFullPath, normalizeRouteRecord } from "./utils";
+import { type RouteConfig } from "./type";
+import { normalizeRouteRecord } from "./utils";
 import { userLoader } from "../pages/About/userLoader.ts";
-import { App1 } from "../App.tsx";
+import App from "../App.tsx";
 import Layout1 from "@/pages/layout1/index.tsx";
 import Layout11 from "@/pages/layout1-1/index.tsx";
 import Layout2 from "@/pages/layout1-2/index.tsx";
@@ -36,16 +36,24 @@ export const routes: RouteConfig[] = [
             <Login />
             // </RouterBeforeEach>
         ),
-        meta: {
-            name: "登录页",
+        handle: {
+            meta: {
+                title: "登录页",
+            },
         },
     },
     {
         path: "/",
         errorElement: <Error />,
-        element: <App1 />,
+        element: <App />,
         children: [
-            { path: "", element: <Home /> },
+            {
+                path: "",
+                element: <Home />,
+                meta: {
+                    name: "Home页",
+                },
+            },
             {
                 path: "about1",
                 element: <About1 />,
@@ -57,7 +65,13 @@ export const routes: RouteConfig[] = [
                 meta: { requireAuth: true },
                 loader: userLoader,
             },
-            { path: "test", element: <Test /> },
+            {
+                path: "test",
+                element: <Test />,
+                handle: {
+                    meta: { requireAuth: true, title: "Test" },
+                },
+            },
             {
                 path: "layout",
                 element: <Layout1 />,
@@ -103,11 +117,9 @@ export const routes: RouteConfig[] = [
     {
         path: "/settings",
         element: (
-            <RouterBeforeEach>
-                <div>
-                    settings <Outlet />
-                </div>
-            </RouterBeforeEach>
+            <div>
+                settings <Outlet />
+            </div>
         ),
         children: [
             {
@@ -129,36 +141,12 @@ export const routes: RouteConfig[] = [
             },
         ],
     },
+    { path: "/unpermission", element: <div>unpermission</div> },
     { path: "*", element: <NotFound /> },
 ];
-
-const routesWithFullPath = generateRoutesWithFullPath(routes);
-console.log("routesWithFullPath: ", routesWithFullPath);
-
-let rotuesMap = new Map<
-    string,
-    Pick<RouteConfigWithFullPath, "meta" | "fullPath" | "path" | "redirect">
->();
-const handleRoutesToMap = (routes: RouteConfigWithFullPath[]) => {
-    routes.forEach((route) => {
-        if (route.fullPath) {
-            if (route.children) {
-                handleRoutesToMap(route.children);
-            }
-            rotuesMap.set(route.fullPath, route);
-        }
-        return;
-    });
-    return rotuesMap;
-};
-
-handleRoutesToMap(routesWithFullPath);
-console.log("rotuesMap: ", rotuesMap);
 
 const asyncRoutes = normalizeRouteRecord(routes);
 
 const router = createBrowserRouter(asyncRoutes);
 
 export default router;
-
-export { rotuesMap };

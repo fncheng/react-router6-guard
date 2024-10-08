@@ -1,101 +1,44 @@
-import './styles.css'
-import {
-  Navigate,
-  Outlet,
-  Route,
-  BrowserRouter as Router,
-  RouterProvider,
-  Routes,
-  useLocation,
-  useNavigate
-} from 'react-router-dom'
-import { Suspense, createContext, useEffect, useState } from 'react'
-import router from './router'
-import AppLayout from './pages/AppLayout'
-import { Loading } from './utils/Loading'
+import "./styles.css";
+import { useLocation, useMatches, useNavigate } from "react-router-dom";
+import { createContext, useContext, useEffect } from "react";
+import AppLayout from "./pages/AppLayout";
 
 interface IGlobalContext {
-  isLogin: boolean
-  setLogin: React.Dispatch<React.SetStateAction<boolean>>
+    isLogin: boolean;
+    setLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const globalContext = createContext<IGlobalContext>({
-  isLogin: JSON.parse(localStorage.getItem('isLogin') || 'false'),
-  setLogin: () => {}
-})
+    isLogin: JSON.parse(localStorage.getItem("isLogin") || "false"),
+    setLogin: () => {},
+});
 
-
-
-export function App() {
-  const [isLogin, setLogin] = useState<boolean>(() => {
-    const storeValue = localStorage.getItem('isLogin')
-    return storeValue ? JSON.parse(storeValue) : false
-  })
-
-  const location = useLocation()
-  const navigate = useNavigate()
-
-  
-
-  return (
-    <div className='App'>
-      <globalContext.Provider value={{ isLogin, setLogin }}>
-        {false && (
-          <Router>
-            <Suspense fallback={<div>loading...</div>}>
-              <Routes>
-                <Route path='/' element={<Navigate to='/dashboard' />}></Route>
-                <Route path='/dashboard' element={'dashboard'} />
-                <Route path='/about' element={'about'} />
-                <Route
-                  path='/settings'
-                  element={
-                    <div>
-                      settings <Outlet />
-                    </div>
-                  }
-                >
-                  {/* 这里为了解决重定向需要新增一条带index的路由 */}
-                  <Route index element={<Navigate to='profile' />} />
-                  <Route
-                    path='profile'
-                    element={
-                      <div>
-                        profile <Outlet />
-                      </div>
-                    }
-                  >
-                    <Route path='a' element={'aaa'}></Route>
-                    <Route path='b' element={'bbb'}></Route>
-                  </Route>
-                  <Route path='profile2' element={'profile2'} />
-                </Route>
-              </Routes>
-            </Suspense>
-          </Router>
-        )}
-        <Suspense fallback={<Loading />}>
-          <RouterProvider router={router} />
-        </Suspense>
-      </globalContext.Provider>
-    </div>
-  )
-}
-
-export function App1() {
-    const [isLogin, setLogin] = useState<boolean>(() => {
-        const storeValue = localStorage.getItem("isLogin");
-        return storeValue ? JSON.parse(storeValue) : false;
-    });
+export default function App() {
+    const { isLogin } = useContext(globalContext);
 
     const location = useLocation();
+    const matches = useMatches();
+    // to 即我们要跳转的页面路由元信息
+    const to = matches.find((item) => item.pathname === location.pathname);
+    console.log("to: ", to);
     const navigate = useNavigate();
-    console.log('location: ', location);
 
     const handleRouteChange = () => {
         console.log("------全局路由守卫------", isLogin);
+        // 如果未登录，且去的页面不是登录页，则重定向到登录页
         if (!isLogin && location.pathname !== "/login") {
             navigate("/login");
+        }
+        // 如果已登录，不可直接去登录页，应通过logout退出登录来跳转登录页
+        if (isLogin && location.pathname === "/login") {
+            navigate("/");
+        }
+        // 需要鉴权的页面
+        if (to?.handle?.meta?.requireAuth) {
+            // 判断有没有这个页面的权限
+            // ...
+            // 没有则跳转至指定页
+            navigate("/unpermission");
         }
     };
 
