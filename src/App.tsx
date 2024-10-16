@@ -1,20 +1,12 @@
 import "./styles.css";
 import { useLocation, useMatches, useNavigate } from "react-router-dom";
-import { createContext, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import AppLayout from "./pages/AppLayout";
-
-interface IGlobalContext {
-    isLogin: boolean;
-    setLogin: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export const globalContext = createContext<IGlobalContext>({
-    isLogin: JSON.parse(localStorage.getItem("isLogin") || "false"),
-    setLogin: () => {},
-});
+import { GlobalContext } from "./utils/GlobalContext";
 
 export default function App() {
-    const { isLogin } = useContext(globalContext);
+    const { isLogin } = useContext(GlobalContext);
+    console.log("isLogin: ", isLogin);
 
     const location = useLocation();
     const matches = useMatches();
@@ -44,7 +36,7 @@ export default function App() {
 
     useEffect(() => {
         handleRouteChange();
-    }, [location.pathname]);
+    }, [location]);
 
     return <AppLayout />;
 }

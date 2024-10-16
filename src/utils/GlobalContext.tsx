@@ -18,6 +18,7 @@ interface GlobalProviderProps {
 export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     const [isLogin, setLogin] = useState<boolean>(() => {
         const storeValue = localStorage.getItem("isLogin");
+        console.log('storeValue: ', storeValue);
         return storeValue ? JSON.parse(storeValue) : false;
     });
 

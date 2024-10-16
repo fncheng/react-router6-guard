@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom';
 
-const Layout3 = () => (
+const Layout13 = () => (
   <div>
     <div>layout 1-3</div>
     <Outlet />
   </div>
 );
 
-export default Layout3;
+export default Layout13;

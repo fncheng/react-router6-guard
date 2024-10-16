@@ -3,19 +3,12 @@ import Error from "../pages/Error";
 import NotFound from "../pages/NotFound";
 import Test from "../pages/Test";
 import { lazy } from "react";
-import RouterBeforeEach from "./RouterBeforeEach";
 import Login from "../pages/login";
 import { type RouteConfig } from "./type";
-import { normalizeRouteRecord } from "./utils";
 import { userLoader } from "../pages/About/userLoader.ts";
 import App from "../App.tsx";
 import Layout1 from "@/pages/layout1/index.tsx";
-import Layout11 from "@/pages/layout1-1/index.tsx";
-import Layout2 from "@/pages/layout1-2/index.tsx";
-import Layout3 from "@/pages/layout1-3/index.tsx";
-import Layout131 from "@/pages/layout1-3-1/index.tsx";
-import Layout132 from "@/pages/layout1-3-2/index.tsx";
-import About1 from "../pages/About/About1.tsx";
+import loadable from "@loadable/component";
 
 const modules: Record<string, () => Promise<any>> = import.meta.glob("../pages/**/*.tsx");
 
@@ -25,16 +18,25 @@ export const createLazyComponent = (path: string) => {
 };
 
 const About = lazy(() => import("../pages/About/index.tsx"));
-// const About1 = lazy(() => import("../pages/About/About1.tsx"));
+const About1 = lazy(() => import("../pages/About/About1.tsx"));
 const Home = lazy(() => import("../pages/Home/index"));
+
+/**
+ * Loadable Components Full dynamic import
+ */
+const AsyncPage = loadable(
+    (props: { page: string }) => import(/* @vite-ignore */ `../pages/${props.page}/index.tsx`),
+    {
+        fallback: <div> Layout Loading...</div>,
+        cacheKey: (props) => props.page,
+    }
+);
 
 export const routes: RouteConfig[] = [
     {
         path: "/login",
         element: (
-            // <RouterBeforeEach>
             <Login />
-            // </RouterBeforeEach>
         ),
         handle: {
             meta: {
@@ -57,6 +59,7 @@ export const routes: RouteConfig[] = [
             {
                 path: "about1",
                 element: <About1 />,
+                errorElement: <Error />,
             },
             {
                 id: "user",
@@ -75,38 +78,30 @@ export const routes: RouteConfig[] = [
             {
                 path: "layout",
                 element: <Layout1 />,
-                // element: <Layout />,
-                componentPath: "layout1/index",
-                redirect: "1",
                 children: [
                     {
                         path: "1",
-                        componentPath: "layout1-1/index",
-                        element: <Layout11 />,
-                        meta: { requireAuth: true },
+                        element: <AsyncPage page="Layout1-1" />,
                     },
                     {
                         path: "2",
-                        componentPath: "/layout1-2/index",
-                        element: <Layout2 />,
-                        meta: { requireAuth: true },
+                        element: <AsyncPage page="Layout1-2" />,
                     },
                     {
                         path: "3",
-                        element: <Layout3 />,
-                        componentPath: "pages/layout1-3/index",
+                        element: <AsyncPage page="Layout1-3" />,
                         children: [
                             {
+                                index: true,
+                                element: <Navigate to="1" />,
+                            },
+                            {
                                 path: "1",
-                                componentPath: "layout1-3-1/index",
-                                element: <Layout131 />,
-                                meta: { requireAuth: true },
+                                element: <AsyncPage page="Layout1-3-1" />,
                             },
                             {
                                 path: "2",
-                                componentPath: "layout1-3-2/index",
-                                element: <Layout132 />,
-                                meta: { requireAuth: true },
+                                element: <AsyncPage page="Layout1-3-2" />,
                             },
                         ],
                     },
@@ -145,8 +140,6 @@ export const routes: RouteConfig[] = [
     { path: "*", element: <NotFound /> },
 ];
 
-const asyncRoutes = normalizeRouteRecord(routes);
-
-const router = createBrowserRouter(asyncRoutes);
+const router = createBrowserRouter(routes);
 
 export default router;

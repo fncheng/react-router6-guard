@@ -1,9 +1,9 @@
+import { GlobalContext } from "@/utils/GlobalContext"
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { globalContext } from "../../App";
 
 export default () => {
-    const { isLogin, setLogin } = useContext(globalContext);
+    const { isLogin, setLogin } = useContext(GlobalContext);
     console.log("isLogin: ", isLogin);
     const navigate = useNavigate();
 
