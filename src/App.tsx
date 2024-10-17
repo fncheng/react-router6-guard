@@ -6,7 +6,6 @@ import { GlobalContext } from "./utils/GlobalContext";
 
 export default function App() {
     const { isLogin } = useContext(GlobalContext);
-    console.log("isLogin: ", isLogin);
 
     const location = useLocation();
     const matches = useMatches();

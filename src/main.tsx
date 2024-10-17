@@ -1,9 +1,8 @@
 import ReactDOM from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
-import router from "./router";
 import { GlobalProvider } from "./utils/GlobalContext";
 import { Suspense } from "react";
 import { Loading } from "./utils/Loading";
+import Router from "./router"
 
 const rootElement = document.getElementById("root")!;
 const root = ReactDOM.createRoot(rootElement);
@@ -11,7 +10,7 @@ const root = ReactDOM.createRoot(rootElement);
 root.render(
     <GlobalProvider>
         <Suspense fallback={<Loading />}>
-            <RouterProvider router={router} />
+            <Router />
         </Suspense>
     </GlobalProvider>
 );

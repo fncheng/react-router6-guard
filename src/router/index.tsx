@@ -1,14 +1,14 @@
-import { Navigate, Outlet, createBrowserRouter } from "react-router-dom";
+import { Navigate, Outlet, RouteObject, RouterProvider, createBrowserRouter } from "react-router-dom";
 import Error from "../pages/Error";
 import NotFound from "../pages/NotFound";
 import Test from "../pages/Test";
 import { lazy } from "react";
 import Login from "../pages/login";
-import { type RouteConfig } from "./type";
 import { userLoader } from "../pages/About/userLoader.ts";
 import App from "../App.tsx";
 import Layout1 from "@/pages/layout1/index.tsx";
 import loadable from "@loadable/component";
+import pMinDelay from "p-min-delay";
 
 const modules: Record<string, () => Promise<any>> = import.meta.glob("../pages/**/*.tsx");
 
@@ -25,14 +25,14 @@ const Home = lazy(() => import("../pages/Home/index"));
  * Loadable Components Full dynamic import
  */
 const AsyncPage = loadable(
-    (props: { page: string }) => import(/* @vite-ignore */ `../pages/${props.page}/index.tsx`),
+    (props: { page: string }) => pMinDelay(import(`../pages/${props.page}/index.tsx`), 300),
     {
         fallback: <div> Layout Loading...</div>,
         cacheKey: (props) => props.page,
     }
 );
 
-export const routes: RouteConfig[] = [
+export const routes: RouteObject[] = [
     {
         path: "/login",
         element: (
@@ -52,8 +52,10 @@ export const routes: RouteConfig[] = [
             {
                 path: "",
                 element: <Home />,
-                meta: {
-                    name: "Home页",
+                handle: {
+                    meta: {
+                        title: "Home页",
+                    },
                 },
             },
             {
@@ -65,7 +67,6 @@ export const routes: RouteConfig[] = [
                 id: "user",
                 path: "about",
                 element: <About />,
-                meta: { requireAuth: true },
                 loader: userLoader,
             },
             {
@@ -81,15 +82,15 @@ export const routes: RouteConfig[] = [
                 children: [
                     {
                         path: "1",
-                        element: <AsyncPage page="Layout1-1" />,
+                        element: <AsyncPage page="layout1-1" />,
                     },
                     {
                         path: "2",
-                        element: <AsyncPage page="Layout1-2" />,
+                        element: <AsyncPage page="layout1-2" />,
                     },
                     {
                         path: "3",
-                        element: <AsyncPage page="Layout1-3" />,
+                        element: <AsyncPage page="layout1-3" />,
                         children: [
                             {
                                 index: true,
@@ -97,11 +98,11 @@ export const routes: RouteConfig[] = [
                             },
                             {
                                 path: "1",
-                                element: <AsyncPage page="Layout1-3-1" />,
+                                element: <AsyncPage page="layout1-3-1" />,
                             },
                             {
                                 path: "2",
-                                element: <AsyncPage page="Layout1-3-2" />,
+                                element: <AsyncPage page="layout1-3-2" />,
                             },
                         ],
                     },
@@ -142,4 +143,6 @@ export const routes: RouteConfig[] = [
 
 const router = createBrowserRouter(routes);
 
-export default router;
+const Router = () => <RouterProvider router={router} />;
+
+export default Router;
