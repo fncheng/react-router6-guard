@@ -1,4 +1,10 @@
-import { Navigate, Outlet, RouteObject, RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+    Navigate,
+    Outlet,
+    RouteObject,
+    RouterProvider,
+    createBrowserRouter,
+} from "react-router-dom";
 import Error from "../pages/Error";
 import NotFound from "../pages/NotFound";
 import Test from "../pages/Test";
@@ -8,7 +14,6 @@ import { userLoader } from "../pages/About/userLoader.ts";
 import App from "../App.tsx";
 import Layout1 from "@/pages/layout1/index.tsx";
 import loadable from "@loadable/component";
-import pMinDelay from "p-min-delay";
 
 const modules: Record<string, () => Promise<any>> = import.meta.glob("../pages/**/*.tsx");
 
@@ -24,8 +29,22 @@ const Home = lazy(() => import("../pages/Home/index"));
 /**
  * Loadable Components Full dynamic import
  */
+// const AsyncPage = loadable(
+//     (props: { page: string }) => pMinDelay(import(`../pages/${props.page}/index.tsx`), 3000),
+//     {
+//         fallback: <div> Layout Loading...</div>,
+//         cacheKey: (props) => props.page,
+//     }
+// );
+
+const loadWithDelay = (promise: Promise<any>, time: number) => {
+    const delay = (d: number) => new Promise((resolve) => setTimeout(resolve, d));
+    const delayPromise = delay(time);
+    return Promise.all([promise, delayPromise]).then(() => promise);
+};
+
 const AsyncPage = loadable(
-    (props: { page: string }) => pMinDelay(import(`../pages/${props.page}/index.tsx`), 300),
+    (props: { page: string }) => loadWithDelay(import(`../pages/${props.page}/index.tsx`), 500),
     {
         fallback: <div> Layout Loading...</div>,
         cacheKey: (props) => props.page,
@@ -35,9 +54,7 @@ const AsyncPage = loadable(
 export const routes: RouteObject[] = [
     {
         path: "/login",
-        element: (
-            <Login />
-        ),
+        element: <Login />,
         handle: {
             meta: {
                 title: "登录页",
