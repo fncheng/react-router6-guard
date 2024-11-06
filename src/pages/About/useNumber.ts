@@ -1,6 +1,6 @@
 export const useNumber = async (signal?: AbortSignal) => {
-    
-    const response = await fetch("http://127.0.0.1:3000/test/getNumber", {
+
+    const response = await fetch("/proxyApi/test/getNumber", {
         signal,
     });
     if (!response.ok) {
