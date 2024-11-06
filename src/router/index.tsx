@@ -89,6 +89,10 @@ export const routes: RouteObject[] = [
             {
                 path: "test",
                 element: <Test />,
+            },
+            {
+                path: "noauth",
+                element: <Test />,
                 handle: {
                     meta: { requireAuth: true, title: "Test" },
                 },
@@ -97,6 +101,10 @@ export const routes: RouteObject[] = [
                 path: "layout",
                 element: <Layout1 />,
                 children: [
+                    {
+                        index: true,
+                        element: <Navigate to="1" />,
+                    },
                     {
                         path: "1",
                         element: <AsyncPage page="layout1-1" />,
