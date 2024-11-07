@@ -1,5 +1,4 @@
-import { Suspense } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 
 const AppLayout = () => {
   return (
@@ -15,6 +14,7 @@ const AppLayout = () => {
         <Link to='/layout/2'>layout-2</Link>
         <Link to='/layout/3/1'>layout-3-1</Link>
         <Link to='/layout/3/2'>layout-3-2</Link>
+        <NavLink to='/mobx'>mobx</NavLink>
       </div>
         <Outlet />
     </div>

@@ -14,6 +14,7 @@ import { userLoader } from "../pages/About/userLoader.ts";
 import App from "../App.tsx";
 import Layout1 from "@/pages/layout1/index.tsx";
 import loadable from "@loadable/component";
+import Mobx from "@/pages/mobx/index.tsx"
 
 const modules: Record<string, () => Promise<any>> = import.meta.glob("../pages/**/*.tsx");
 
@@ -98,6 +99,10 @@ export const routes: RouteObject[] = [
                 handle: {
                     meta: { requireAuth: true, title: "Test" },
                 },
+            },
+            {
+                path: 'mobx',
+                element: <Mobx />
             },
             {
                 path: "layout",
