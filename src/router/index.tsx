@@ -85,6 +85,8 @@ export const routes: RouteObject[] = [
                 path: "about",
                 element: <About />,
                 loader: userLoader,
+                // ErrorBoundary: Error,
+                errorElement: <Error />,
             },
             {
                 path: "test",
