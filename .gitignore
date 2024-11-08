@@ -1,3 +1,4 @@
 .DS_Store
 .codesandbox
 node_modules
+.idea

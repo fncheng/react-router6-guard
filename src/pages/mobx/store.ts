@@ -1,5 +1,5 @@
-import { observable } from 'mobx'
-import { useLocalObservable } from 'mobx-react'
+import {observable} from 'mobx'
+import {useLocalObservable} from 'mobx-react'
 
 type CounterStore = {
     count: number
@@ -11,7 +11,7 @@ export const counterStore1 = () => {
         count: 0
     })
 
-    store.increment = () => (store.count += 1)
+    store.increment = () => store.count += 1
 
     return store
 }
@@ -23,7 +23,7 @@ export const counterStore = () => {
 
     const increment = () => (store.count += 1)
 
-    return { ...store, increment }
+    return {...store, increment}
 }
 
 export default counterStore
