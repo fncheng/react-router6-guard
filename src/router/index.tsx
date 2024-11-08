@@ -14,7 +14,6 @@ import { userLoader } from "../pages/About/userLoader.ts";
 import App from "../App.tsx";
 import Layout1 from "@/pages/layout1/index.tsx";
 import loadable from "@loadable/component";
-import Mobx from "@/pages/mobx/index.tsx"
 
 const modules: Record<string, () => Promise<any>> = import.meta.glob("../pages/**/*.tsx");
 
@@ -102,7 +101,7 @@ export const routes: RouteObject[] = [
             },
             {
                 path: 'mobx',
-                element: <Mobx />
+                element: <AsyncPage page="mobx" />
             },
             {
                 path: "layout",
