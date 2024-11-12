@@ -1,5 +1,5 @@
 import { abortRequest } from '@/api'
-import { getNumber, getNumberAbort } from '@/api/api'
+import { getId, getNumber, getNumberAbort } from '@/api/api'
 import { Button } from 'antd'
 import { useEffect, useState } from 'react'
 
@@ -14,6 +14,11 @@ const Axios: React.FC = () => {
     }
     const handleCancel = () => {
         abortRequest('/test/getNumber')
+    }
+
+    const getUserId = async (id: number) => {
+        let res = await getId(id)
+        console.log('id', res)
     }
 
     console.log('render')
@@ -31,6 +36,17 @@ const Axios: React.FC = () => {
             controller.abort()
         }
     }, [])
+
+    useEffect(() => {
+        getUserId(18)
+        getUserId(20)
+        return () => {
+            abortRequest('/test/getNumber')
+            abortRequest('/test/user?id=18')
+            abortRequest('/test/user?id=20')
+        }
+    }, [])
+
     return (
         <div>
             <Button onClick={handleStartRequest}>start</Button>

@@ -18,6 +18,15 @@ export const getName = () =>
         method: 'get'
     })
 
+export const getId = (id: number) =>
+    request({
+        url: `/test/user`,
+        method: 'get',
+        params: {
+            id
+        }
+    })
+
 export const getRequest = (controller: AbortController) =>
     request({
         url: 'http://127.0.0.1:3000/route',

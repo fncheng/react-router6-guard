@@ -1,5 +1,6 @@
 import { useUserStore } from '@/store'
 import axios, { type AxiosRequestConfig } from 'axios'
+import qs from 'qs'
 
 const service = axios.create({
     baseURL: '/proxyApi',
@@ -25,9 +26,15 @@ service.interceptors.request.use(
         // 保存当前请求的 controller，key 可以用请求 URL 等唯一标识
         const controller = new AbortController()
         config.signal = controller.signal
-
-        if (config.url) {
-            controllers.set(config.url, controller)
+        let key = config.url
+        if (config.params) {
+            key = `${config.url}?${qs.stringify(config.params)}`
+        }
+        if (key && controllers.has(key)) {
+            controllers.get(key)?.abort()
+        }
+        if (key) {
+            controllers.set(key, controller)
         }
 
         const store = useUserStore.getState()
