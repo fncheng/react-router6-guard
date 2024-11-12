@@ -1,4 +1,5 @@
 import { useUserStore } from '@/store'
+import { message as Message } from 'antd'
 import axios, { type AxiosRequestConfig } from 'axios'
 import qs from 'qs'
 
@@ -60,6 +61,10 @@ service.interceptors.response.use(
             // 如果请求被取消了
             if (axios.isCancel(err)) {
                 console.log('Request canceled', err.message)
+                Message.warning({
+                    content: '请求被取消了',
+                    duration: 2
+                })
             } else console.error('Request failed', err)
         })
     }

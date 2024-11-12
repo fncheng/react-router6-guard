@@ -1,0 +1,6 @@
+.ellipsis {
+    color: red;
+    white-space: nowrap;       /* 强制在一行内显示 */
+    overflow: hidden;          /* 超出部分隐藏 */
+    text-overflow: ellipsis;   /* 文字过长时显示省略号 */
+  }
