@@ -1,16 +1,14 @@
-import { LoadingOutlined } from "@ant-design/icons";
-
 export const Loading = () => {
     return (
         <div
             style={{
-                display: "flex",
+                display: 'flex',
                 height: 100,
-                justifyContent: "center",
-                alignItems: "center",
+                justifyContent: 'center',
+                alignItems: 'center'
             }}
         >
-            <LoadingOutlined />
+            Please wait...
         </div>
-    );
-};
+    )
+}

@@ -2,9 +2,12 @@ import { abortRequest } from '@/api'
 import { getId, getNumber, getNumberAbort } from '@/api/api'
 import { Button } from 'antd'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const Axios: React.FC = () => {
     const [number, setNumber] = useState(0)
+
+    const { t, i18n } = useTranslation()
 
     const handleStartRequest = async () => {
         const res = await getNumber()
@@ -49,9 +52,13 @@ const Axios: React.FC = () => {
 
     return (
         <div>
-            <Button onClick={handleStartRequest}>start</Button>
+            <Button onClick={handleStartRequest}>{t('start')}</Button>
             <span>number: {number}</span>
-            <Button onClick={handleCancel}>cancel</Button>
+            <Button onClick={handleCancel}>{t('cancel')}</Button>
+            <div>
+                <Button onClick={() => i18n.changeLanguage('zh-CN')}>中文</Button>
+                <Button onClick={() => i18n.changeLanguage('en-US')}>English</Button>
+            </div>
         </div>
     )
 }

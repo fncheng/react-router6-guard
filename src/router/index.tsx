@@ -3,29 +3,27 @@ import {
     Outlet,
     RouteObject,
     RouterProvider,
-    createBrowserRouter,
-} from "react-router-dom";
-import Error from "../pages/Error";
-import NotFound from "../pages/NotFound";
-import Test from "../pages/Test";
-import { lazy } from "react";
-import Login from "../pages/login";
-import { userLoader } from "../pages/About/userLoader.ts";
-import App from "../App.tsx";
-import Layout1 from "@/pages/layout1/index.tsx";
-import loadable from "@loadable/component";
+    createBrowserRouter
+} from 'react-router-dom'
+import Error from '../pages/Error'
+import NotFound from '../pages/NotFound'
+import { lazy } from 'react'
+import Login from '../pages/login'
+import { userLoader } from '../pages/About/userLoader.ts'
+import App from '../App.tsx'
+import Layout1 from '@/pages/layout1/index.tsx'
+import loadable from '@loadable/component'
 
-const modules: Record<string, () => Promise<any>> = import.meta.glob("../pages/**/*.tsx");
+const modules: Record<string, () => Promise<any>> = import.meta.glob('../pages/**/*.tsx')
 
 export const createLazyComponent = (path: string) => {
-    const Component = lazy(modules[`../pages/${path}.tsx`]);
-    return <Component key={path} />;
-};
+    const Component = lazy(modules[`../pages/${path}.tsx`])
+    return <Component key={path} />
+}
 
-const About = lazy(() => import("../pages/About/index.tsx"));
-const About1 = lazy(() => import("../pages/About/About1.tsx"));
-const Home = lazy(() => import("../pages/Home/index"));
-
+const About = lazy(() => import('../pages/About/index.tsx'))
+const About1 = lazy(() => import('../pages/About/About1.tsx'))
+const Home = lazy(() => import('../pages/Home/index'))
 /**
  * Loadable Components Full dynamic import
  */
@@ -37,116 +35,118 @@ const Home = lazy(() => import("../pages/Home/index"));
 //     }
 // );
 
-const loadWithDelay = (promise: Promise<any>, time: number) => {
-    const delay = (d: number) => new Promise((resolve) => setTimeout(resolve, d));
-    const delayPromise = delay(time);
-    return Promise.all([promise, delayPromise]).then(() => promise);
-};
+export const loadWithDelay = (promise: Promise<any>, time: number) => {
+    const delay = (d: number) => new Promise((resolve) => setTimeout(resolve, d))
+    const delayPromise = delay(time)
+    return Promise.all([promise, delayPromise]).then(() => promise)
+}
+
+const Test = lazy(() => loadWithDelay(import('../pages/Test/index.tsx'), 500))
 
 const AsyncPage = loadable(
     (props: { page: string }) => loadWithDelay(import(`../pages/${props.page}/index.tsx`), 500),
     {
         fallback: <div> Layout Loading...</div>,
-        cacheKey: (props) => props.page,
+        cacheKey: (props) => props.page
     }
-);
+)
 
 export const routes: RouteObject[] = [
     {
-        path: "/login",
+        path: '/login',
         element: <Login />,
         handle: {
             meta: {
-                title: "登录页",
-            },
-        },
+                title: '登录页'
+            }
+        }
     },
     {
-        path: "/",
+        path: '/',
         errorElement: <Error />,
         element: <App />,
         children: [
             {
-                path: "",
+                path: '',
                 element: <Home />,
                 handle: {
                     meta: {
-                        title: "Home页",
-                    },
-                },
+                        title: 'Home页'
+                    }
+                }
             },
             {
-                path: "about1",
+                path: 'about1',
                 element: <About1 />,
-                errorElement: <Error />,
+                errorElement: <Error />
             },
             {
-                id: "user",
-                path: "about",
+                id: 'user',
+                path: 'about',
                 element: <About />,
                 loader: userLoader,
                 // ErrorBoundary: Error,
-                errorElement: <Error />,
+                errorElement: <Error />
             },
             {
-                path: "test",
-                element: <Test />,
+                path: 'test',
+                element: <Test />
             },
             {
-                path: "noauth",
+                path: 'noauth',
                 element: <Test />,
                 handle: {
-                    meta: { requireAuth: true, title: "Test" },
-                },
+                    meta: { requireAuth: true, title: 'Test' }
+                }
             },
             {
                 path: 'mobx',
-                element: <AsyncPage page="mobx" />
+                element: <AsyncPage page='mobx' />
             },
             {
                 path: 'axios',
-                element: <AsyncPage page="Axios" />
+                element: <AsyncPage page='Axios' />
             },
             {
-                path: "layout",
+                path: 'layout',
                 element: <Layout1 />,
                 children: [
                     {
                         index: true,
-                        element: <Navigate to="1" />,
+                        element: <Navigate to='1' />
                     },
                     {
-                        path: "1",
-                        element: <AsyncPage page="layout1-1" />,
+                        path: '1',
+                        element: <AsyncPage page='layout1-1' />
                     },
                     {
-                        path: "2",
-                        element: <AsyncPage page="layout1-2" />,
+                        path: '2',
+                        element: <AsyncPage page='layout1-2' />
                     },
                     {
-                        path: "3",
-                        element: <AsyncPage page="layout1-3" />,
+                        path: '3',
+                        element: <AsyncPage page='layout1-3' />,
                         children: [
                             {
                                 index: true,
-                                element: <Navigate to="1" />,
+                                element: <Navigate to='1' />
                             },
                             {
-                                path: "1",
-                                element: <AsyncPage page="layout1-3-1" />,
+                                path: '1',
+                                element: <AsyncPage page='layout1-3-1' />
                             },
                             {
-                                path: "2",
-                                element: <AsyncPage page="layout1-3-2" />,
-                            },
-                        ],
-                    },
-                ],
-            },
-        ],
+                                path: '2',
+                                element: <AsyncPage page='layout1-3-2' />
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
     },
     {
-        path: "/settings",
+        path: '/settings',
         element: (
             <div>
                 settings <Outlet />
@@ -155,29 +155,29 @@ export const routes: RouteObject[] = [
         children: [
             {
                 index: true,
-                element: <Navigate to="profile" />,
+                element: <Navigate to='profile' />
             },
             {
-                path: "profile",
+                path: 'profile',
                 element: (
                     <div>
                         profile <Outlet />
                     </div>
                 ),
                 children: [
-                    { index: true, element: <Navigate to="a" /> },
-                    { path: "a", element: <div>aaa</div> },
-                    { path: "a", element: <div>aaa</div> },
-                ],
-            },
-        ],
+                    { index: true, element: <Navigate to='a' /> },
+                    { path: 'a', element: <div>aaa</div> },
+                    { path: 'a', element: <div>aaa</div> }
+                ]
+            }
+        ]
     },
-    { path: "/unpermission", element: <div>unpermission</div> },
-    { path: "*", element: <NotFound /> },
-];
+    { path: '/unpermission', element: <div>unpermission</div> },
+    { path: '*', element: <NotFound /> }
+]
 
-const router = createBrowserRouter(routes);
+const router = createBrowserRouter(routes)
 
-const Router = () => <RouterProvider router={router} />;
+const Router = () => <RouterProvider router={router} />
 
-export default Router;
+export default Router
