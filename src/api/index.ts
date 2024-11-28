@@ -1,6 +1,6 @@
 import { useUserStore } from '@/store'
 import { message as Message } from 'antd'
-import axios, { type AxiosRequestConfig } from 'axios'
+import axios, { AxiosResponse, type AxiosRequestConfig } from 'axios'
 import qs from 'qs'
 
 const service = axios.create({
@@ -12,7 +12,7 @@ const controllers = new Map<string, AbortController>()
 
 export const axiosRequestWithAbort = <T>(
     options: AxiosRequestConfig = {}
-): { request: Promise<T>; controller: AbortController } => {
+): { request: Promise<AxiosResponse<T, any>>; controller: AbortController } => {
     const controller = new AbortController()
     const signal = controller.signal
 
