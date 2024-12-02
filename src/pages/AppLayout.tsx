@@ -16,6 +16,7 @@ const AppLayout = () => {
         <Link to='/layout/3/2'>layout-3-2</Link>
         <NavLink to='/mobx'>mobx</NavLink>
         <NavLink to='/axios'>axios</NavLink>
+        <NavLink to='/radix'>radix</NavLink>
       </div>
         <Outlet />
     </div>

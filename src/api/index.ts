@@ -12,12 +12,12 @@ const controllers = new Map<string, AbortController>()
 
 export const axiosRequestWithAbort = <T>(
     options: AxiosRequestConfig = {}
-): { request: Promise<AxiosResponse<T, any>>; controller: AbortController } => {
+): { request: Promise<AxiosResponse<T>>; controller: AbortController } => {
     const controller = new AbortController()
     const signal = controller.signal
 
     const config: AxiosRequestConfig = { ...options, signal }
-    const request = service(config)
+    const request = service<any, AxiosResponse<T>>(config)
     return { request, controller }
 }
 

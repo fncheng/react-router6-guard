@@ -108,6 +108,10 @@ export const routes: RouteObject[] = [
                 element: <AsyncPage page='Axios' />
             },
             {
+                path: 'radix',
+                element: <AsyncPage page='Radix' />
+            },
+            {
                 path: 'layout',
                 element: <Layout1 />,
                 children: [

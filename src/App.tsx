@@ -1,41 +1,46 @@
-import "./styles.css";
-import { useLocation, useMatches, useNavigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
-import AppLayout from "./pages/AppLayout";
-import { GlobalContext } from "./utils/GlobalContext";
+import './styles.css'
+import { useLocation, useMatches, useNavigate } from 'react-router-dom'
+import { useContext, useEffect } from 'react'
+import AppLayout from './pages/AppLayout'
+import { GlobalContext } from './utils/GlobalContext'
+import { Theme } from '@radix-ui/themes'
 
 export default function App() {
-    const { isLogin } = useContext(GlobalContext);
+    const { isLogin } = useContext(GlobalContext)
 
-    const location = useLocation();
-    const matches = useMatches();
+    const location = useLocation()
+    const matches = useMatches()
     // to 即我们要跳转的页面路由元信息
-    const to = matches.find((item) => item.pathname === location.pathname);
-    console.log("to: ", to);
-    const navigate = useNavigate();
+    const to = matches.find((item) => item.pathname === location.pathname)
+    console.log('to: ', to)
+    const navigate = useNavigate()
 
     const handleRouteChange = () => {
-        console.log("------全局路由守卫------", isLogin);
+        console.log('------全局路由守卫------', isLogin)
         // 如果未登录，且去的页面不是登录页，则重定向到登录页
-        if (!isLogin && location.pathname !== "/login") {
-            navigate("/login");
+        if (!isLogin && location.pathname !== '/login') {
+            navigate('/login')
         }
         // 如果已登录，不可直接去登录页，应通过logout退出登录来跳转登录页
-        if (isLogin && location.pathname === "/login") {
-            navigate("/");
+        if (isLogin && location.pathname === '/login') {
+            navigate('/')
         }
         // 需要鉴权的页面
         if (to?.handle?.meta?.requireAuth) {
             // 判断有没有这个页面的权限
             // ...
             // 没有则跳转至指定页
-            navigate("/unpermission");
+            navigate('/unpermission')
         }
-    };
+    }
 
     useEffect(() => {
-        handleRouteChange();
-    }, [location]);
+        handleRouteChange()
+    }, [location])
 
-    return <AppLayout />;
+    return (
+        <Theme>
+            <AppLayout />
+        </Theme>
+    )
 }
