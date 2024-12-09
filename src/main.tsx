@@ -4,7 +4,6 @@ import { Suspense } from 'react'
 import { Loading } from './utils/Loading'
 import Router from './router'
 import '@/locale/index'
-import '@radix-ui/themes/styles.css'
 import 'antd/dist/reset.css'
 
 const rootElement = document.getElementById('root')!

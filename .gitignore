@@ -2,3 +2,7 @@
 .codesandbox
 node_modules
 .idea
+dist
+
+*.tsbuildinfo
+stats.html

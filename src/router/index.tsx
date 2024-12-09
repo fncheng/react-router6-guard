@@ -1,10 +1,4 @@
-import {
-    Navigate,
-    Outlet,
-    RouteObject,
-    RouterProvider,
-    createBrowserRouter
-} from 'react-router-dom'
+import { Navigate, Outlet, RouteObject, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Error from '../pages/Error'
 import NotFound from '../pages/NotFound'
 import { lazy } from 'react'
@@ -44,9 +38,9 @@ export const loadWithDelay = (promise: Promise<any>, time: number) => {
 const Test = lazy(() => loadWithDelay(import('../pages/Test/index.tsx'), 500))
 
 const AsyncPage = loadable(
-    (props: { page: string }) => loadWithDelay(import(`../pages/${props.page}/index.tsx`), 500),
+    (props: { page: string }) => loadWithDelay(import(`../pages/${props.page}/index.tsx`), 100),
     {
-        fallback: <div> Layout Loading...</div>,
+        fallback: <div>Please wait...</div>,
         cacheKey: (props) => props.page
     }
 )
@@ -67,7 +61,11 @@ export const routes: RouteObject[] = [
         element: <App />,
         children: [
             {
-                path: '',
+                index: true,
+                element: <Navigate to='/home' />
+            },
+            {
+                path: 'home',
                 element: <Home />,
                 handle: {
                     meta: {
@@ -137,11 +135,17 @@ export const routes: RouteObject[] = [
                             },
                             {
                                 path: '1',
-                                element: <AsyncPage page='layout1-3-1' />
+                                element: <AsyncPage page='layout1-3-1' />,
+                                handle: {
+                                    meta: { title: 'Layout 1-3-1' }
+                                }
                             },
                             {
                                 path: '2',
-                                element: <AsyncPage page='layout1-3-2' />
+                                element: <AsyncPage page='layout1-3-2' />,
+                                handle: {
+                                    meta: { title: 'Layout 1-3-2' }
+                                }
                             }
                         ]
                     }
@@ -171,7 +175,7 @@ export const routes: RouteObject[] = [
                 children: [
                     { index: true, element: <Navigate to='a' /> },
                     { path: 'a', element: <div>aaa</div> },
-                    { path: 'a', element: <div>aaa</div> }
+                    { path: 'b', element: <div>bbb</div> }
                 ]
             }
         ]

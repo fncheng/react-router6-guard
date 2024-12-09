@@ -1,4 +1,6 @@
-export const Loading = () => {
+import { LoadingOutlined } from "@ant-design/icons"
+
+export default function GlobalLoading() {
     return (
         <div
             style={{
@@ -9,7 +11,7 @@ export const Loading = () => {
                 alignItems: 'center'
             }}
         >
-            Please wait...
+            <LoadingOutlined />
         </div>
     )
 }

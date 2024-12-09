@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 #root {
-    margin: 8px;
+    padding: 8px;
+    height: calc(100vh - 16px);
 }
 
 .App {
@@ -15,7 +16,8 @@
 .nav {
     display: flex;
     flex-direction: column;
-    width: 120px;
+    row-gap: 8px;
+    margin-right: 10px;
 }
 
 .content {
@@ -24,4 +26,5 @@
 
 .app_layout {
     display: flex;
+    height: 100%;
 }

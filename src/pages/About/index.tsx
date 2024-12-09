@@ -2,6 +2,7 @@ import { Suspense, useEffect } from 'react'
 import { Await, useLoaderData } from 'react-router-dom'
 import { Loading } from '@/utils/Loading'
 import PieChart from './Pie'
+import GlobalLoading from '@/utils/GlobalLoading'
 
 interface UserData {
     number: boolean
@@ -22,40 +23,42 @@ const About: React.FC = () => {
     console.log('render')
 
     return (
-        <main>
+        <main className='flex flex-1 flex-col'>
             <h1>Let's loading some data</h1>
-            <Suspense fallback={<Loading />}>
-                <Await resolve={number}>
-                    {(data) => {
-                        console.log('render number')
-                        return (
-                            <div style={{ color: 'red' }}>
-                                <h3>Number: {data}</h3>
-                            </div>
-                        )
-                    }}
-                </Await>
-            </Suspense>
-            <Suspense fallback={<Loading />}>
-                <Await resolve={name}>
-                    {(data) => {
-                        console.log('render name')
-                        return (
-                            <div style={{ color: 'red' }}>
-                                <h3>Name: {data}</h3>
-                            </div>
-                        )
-                    }}
-                </Await>
-            </Suspense>
+            <section className='flex flex-1'>
+                <Suspense fallback={<Loading />}>
+                    <Await resolve={number} errorElement={<GlobalLoading />}>
+                        {(data) => {
+                            console.log('render number')
+                            return (
+                                <div style={{ color: 'red' }}>
+                                    <h3>Number: {data}</h3>
+                                </div>
+                            )
+                        }}
+                    </Await>
+                </Suspense>
+                <Suspense fallback={<Loading />}>
+                    <Await resolve={name} errorElement={<GlobalLoading />}>
+                        {(data) => {
+                            console.log('render name')
+                            return (
+                                <div style={{ color: 'red' }}>
+                                    <h3>Name: {data}</h3>
+                                </div>
+                            )
+                        }}
+                    </Await>
+                </Suspense>
 
-            <Suspense fallback={<Loading />}>
-                <Await resolve={pieData}>
-                    {(data) => {
-                        return <PieChart data={data} />
-                    }}
-                </Await>
-            </Suspense>
+                <Suspense fallback={<Loading />}>
+                    <Await resolve={pieData}>
+                        {(data) => {
+                            return <PieChart data={data} />
+                        }}
+                    </Await>
+                </Suspense>
+            </section>
         </main>
     )
 }

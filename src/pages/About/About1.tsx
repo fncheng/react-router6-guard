@@ -4,12 +4,14 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { useAbortRequest } from "@/hooks/useAbortController";
 import PieChart from "./Pie";
 import { useFetchPieData } from "./useFetchPieData";
+import { useName } from "./useName"
 
 const About1: React.FC = () => {
     const [pieData, setPieData] = useState<any[]>([]);
 
     const { data: number, error, loading, run } = useAbortRequest(useNumber);
-    console.log("data: ", number, loading, error);
+    const { data: name, error: nameError, loading: nameLoading } = useAbortRequest(useName);
+    // console.log("data: ", number, loading, error);
 
     const fetchPieData = async () => {
         setPieData(await useFetchPieData());
@@ -35,6 +37,13 @@ const About1: React.FC = () => {
             ) : (
                 <LoadingOutlined />
             )}
+            {
+                name? (
+                    <div style={{ color: "red" }}>Here is the name: {name}</div>
+                ) : (
+                    <LoadingOutlined />
+                )
+            }
             <PieChart data={pieData} />
         </main>
     );

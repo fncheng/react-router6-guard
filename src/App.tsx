@@ -3,7 +3,14 @@ import { useLocation, useMatches, useNavigate } from 'react-router-dom'
 import { useContext, useEffect } from 'react'
 import AppLayout from './pages/AppLayout'
 import { GlobalContext } from './utils/GlobalContext'
-import { Theme } from '@radix-ui/themes'
+import { ConfigProvider, theme, type ThemeConfig } from 'antd'
+
+const customTheme: ThemeConfig = {
+    algorithm: theme.defaultAlgorithm,
+    token: {
+        colorPrimary: '#1DA57A'
+    }
+}
 
 export default function App() {
     const { isLogin } = useContext(GlobalContext)
@@ -16,7 +23,7 @@ export default function App() {
     const navigate = useNavigate()
 
     const handleRouteChange = () => {
-        console.log('------全局路由守卫------', isLogin)
+        console.log('------全局路由守卫------')
         // 如果未登录，且去的页面不是登录页，则重定向到登录页
         if (!isLogin && location.pathname !== '/login') {
             navigate('/login')
@@ -39,8 +46,8 @@ export default function App() {
     }, [location])
 
     return (
-        <Theme>
+        <ConfigProvider theme={customTheme}>
             <AppLayout />
-        </Theme>
+        </ConfigProvider>
     )
 }
