@@ -84,6 +84,7 @@ const AppLayout = () => {
                 <NavLink to='/mobx'>mobx</NavLink>
                 <NavLink to='/axios'>axios</NavLink>
                 <NavLink to='/radix'>radix</NavLink>
+                <NavLink to='/pdf'>pdf</NavLink>
             </div>
             <Outlet />
         </div>
