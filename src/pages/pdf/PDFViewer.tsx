@@ -61,20 +61,19 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl }) => {
      */
     const renderPage = (pdf: any, pageNumber: number) => {
         pdf.getPage(pageNumber).then((page: any) => {
-            const viewport = page.getViewport({ scale: 1.5 })
-            const canvas = canvasRef.current
-
-            if (canvas) {
-                const context = canvas.getContext('2d')
-                canvas.height = viewport.height
-                canvas.width = viewport.width
-
-                const renderContext = {
-                    canvasContext: context,
-                    viewport: viewport
+            if (page) {
+                const viewport = page.getViewport({ scale: 1 })
+                const canvas = canvasRef.current
+                if (canvas) {
+                    const context = canvas.getContext('2d')
+                    canvas.height = viewport.height
+                    canvas.width = viewport.width
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    }
+                    page.render(renderContext)
                 }
-
-                page.render(renderContext)
             }
         })
     }
@@ -88,7 +87,6 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl }) => {
             renderPage(pdfDocument, prevPage)
         }
     }
-
     /**
      * 下一页
      */
@@ -100,10 +98,12 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ fileUrl }) => {
         }
     }
 
+    console.log('pdfviewer render')
+
     return (
         <div>
             <h3>pdf预览</h3>
-            <canvas ref={canvasRef} height={500}></canvas>
+            <canvas ref={canvasRef} width={600} height={500}></canvas>
             {/* 分页控制 */}
             <div style={{ marginTop: '10px' }}>
                 <Button onClick={handlePreviousPage} disabled={currentPage <= 1}>
