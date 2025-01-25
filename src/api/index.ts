@@ -33,6 +33,7 @@ service.interceptors.request.use(
         }
         if (key && controllers.has(key)) {
             controllers.get(key)?.abort()
+            controllers.delete(key)
         }
         if (key) {
             controllers.set(key, controller)

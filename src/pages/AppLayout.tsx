@@ -61,10 +61,10 @@ const AppLayout = () => {
         console.log(item, key)
     }
     const menus = generateMenus(routes)
-    console.log('menus: ', menus);
+    console.log('menus: ', menus)
 
     const handleMenuClick = ({ key }: any) => {
-        console.log('key: ', key);
+        console.log('key: ', key)
         navigate(key)
     }
     return (
@@ -85,6 +85,7 @@ const AppLayout = () => {
                 <NavLink to='/axios'>axios</NavLink>
                 <NavLink to='/radix'>radix</NavLink>
                 <NavLink to='/pdf'>pdf</NavLink>
+                <NavLink to='/zustand'>zustand</NavLink>
             </div>
             <Outlet />
         </div>

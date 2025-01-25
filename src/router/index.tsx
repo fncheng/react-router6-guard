@@ -114,6 +114,10 @@ export const routes: RouteObject[] = [
                 element: <AsyncPage page='pdf' />
             },
             {
+                path: 'zustand',
+                element: <AsyncPage page='zustand' />
+            },
+            {
                 path: 'layout',
                 element: <Layout1 />,
                 children: [
@@ -188,7 +192,7 @@ export const routes: RouteObject[] = [
     { path: '*', element: <NotFound /> }
 ]
 
-const router = createBrowserRouter(routes)
+const router = createBrowserRouter(routes, { basename: '/app' })
 
 const Router = () => <RouterProvider router={router} />
 
