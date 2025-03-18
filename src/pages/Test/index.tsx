@@ -1,7 +1,8 @@
 import { useSearchParams } from 'react-router-dom'
 import styles from './index.module.css'
-import { lazy, Suspense, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { loadWithDelay } from '@/router'
+import { useWindowWidth } from '@/hooks/layout'
 
 const LazyComponent = lazy(() => loadWithDelay(import('./LazyComponent'), 2000))
 
@@ -10,6 +11,12 @@ const Test = () => {
 
     const [params] = useSearchParams()
     console.log('params: ', params)
+
+    const windowWidth = useWindowWidth()
+
+    useEffect(() => {
+        console.log('windowWidth: ', windowWidth)
+    }, [windowWidth])
 
     return (
         <>
