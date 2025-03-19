@@ -1,6 +1,10 @@
 import { MenuOutlined } from '@ant-design/icons'
 import { useState } from 'react'
 
+/**
+ * translateX方案
+ * @returns 
+ */
 const Sidebar = () => {
     const [collapsed, setCollapsed] = useState(false)
 
@@ -8,14 +12,14 @@ const Sidebar = () => {
         <div style={{ position: 'relative', height: 0 }}>
             <div
                 style={{
-                    transform: `scaleX(${collapsed ? 0 : 1})`,
-                    transformOrigin: 'left',
-                    backgroundColor: '#333',
                     width: '200px',
+                    transform: `translateX(${collapsed ? -200 : 0}px)`,
+                    transformOrigin: 'left',
+                    transition: 'transform 0.3s ease-in-out',
+                    backgroundColor: '#333',
                     height: '100vh',
                     color: '#fff',
                     padding: '10px',
-                    transition: 'transform 0.3s ease-in-out',
                     overflow: 'hidden'
                 }}
             >

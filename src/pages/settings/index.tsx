@@ -14,7 +14,15 @@ const Settings = () => {
         },
         {
             key: 'c',
-            label: 'transform'
+            label: 'transform scaleX'
+        },
+        {
+            key: 'd',
+            label: 'transform translateX'
+        },
+        {
+            key: 'e',
+            label: 'position left'
         }
     ]
 

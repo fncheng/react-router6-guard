@@ -175,11 +175,7 @@ export const routes: RouteObject[] = [
     },
     {
         path: '/settings',
-        element: (
-            <div>
-                <Outlet />
-            </div>
-        ),
+        element: <Outlet />,
         children: [
             {
                 index: true,
@@ -192,7 +188,9 @@ export const routes: RouteObject[] = [
                     { index: true, element: <Navigate to='a' /> },
                     { path: 'a', element: <AntdPage page='settings/a' /> },
                     { path: 'b', element: <AntdPage page='settings/b' /> },
-                    { path: 'c', element: <AntdPage page='settings/c' /> }
+                    { path: 'c', element: <AntdPage page='settings/c' /> },
+                    { path: 'd', element: <AntdPage page='settings/d' /> },
+                    { path: 'e', element: <AntdPage page='settings/e' /> }
                 ]
             }
         ]
