@@ -45,6 +45,18 @@ const AsyncPage = loadable(
     }
 )
 
+const AntdPage = loadable(
+    (props: { page: string }) => {
+        const pagePath = `../pages/${props.page}.tsx`
+        const pageModule = modules[pagePath]
+        return loadWithDelay(pageModule(), 200)
+    },
+    {
+        fallback: <div> Layout Loading...</div>,
+        cacheKey: (props) => props.page
+    }
+)
+
 export const routes: RouteObject[] = [
     {
         path: '/login',
@@ -165,7 +177,7 @@ export const routes: RouteObject[] = [
         path: '/settings',
         element: (
             <div>
-                settings <Outlet />
+                <Outlet />
             </div>
         ),
         children: [
@@ -175,15 +187,12 @@ export const routes: RouteObject[] = [
             },
             {
                 path: 'profile',
-                element: (
-                    <div>
-                        profile <Outlet />
-                    </div>
-                ),
+                element: <AsyncPage page='settings' />,
                 children: [
                     { index: true, element: <Navigate to='a' /> },
-                    { path: 'a', element: <div>aaa</div> },
-                    { path: 'b', element: <div>bbb</div> }
+                    { path: 'a', element: <AntdPage page='settings/a' /> },
+                    { path: 'b', element: <AntdPage page='settings/b' /> },
+                    { path: 'c', element: <AntdPage page='settings/c' /> }
                 ]
             }
         ]
