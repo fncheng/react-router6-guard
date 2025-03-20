@@ -8,6 +8,7 @@ import App from '../App.tsx'
 import Layout1 from '@/pages/layout1/index.tsx'
 import loadable from '@loadable/component'
 import addonRoutes from '~react-pages'
+console.log('addonRoutes: ', addonRoutes);
 
 const modules: Record<string, () => Promise<any>> = import.meta.glob('../pages/**/*.tsx')
 

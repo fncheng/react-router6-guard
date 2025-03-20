@@ -40,7 +40,7 @@ export default defineConfig({
             dirs: 'src/app/pages',
             exclude: ['**/components/*.tsx'],
             extensions: ['tsx'],
-            resolver: 'react',
+            resolver: 'react'
         }),
         visualizer(),
         viteStaticCopy({
