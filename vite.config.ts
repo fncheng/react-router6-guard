@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
+import Pages from 'vite-plugin-pages'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -35,6 +36,12 @@ export default defineConfig({
     },
     plugins: [
         react(),
+        Pages({
+            dirs: 'src/app/pages',
+            exclude: ['**/components/*.tsx'],
+            extensions: ['tsx'],
+            resolver: 'react',
+        }),
         visualizer(),
         viteStaticCopy({
             targets: [
