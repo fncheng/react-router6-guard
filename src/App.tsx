@@ -1,9 +1,10 @@
 import './styles.css'
 import { useLocation, useMatches, useNavigate } from 'react-router-dom'
-import { useContext, useEffect } from 'react'
-import AppLayout from './pages/AppLayout'
+import { lazy, useContext, useEffect } from 'react'
 import { GlobalContext } from './utils/GlobalContext'
 import { ConfigProvider, theme, type ThemeConfig } from 'antd'
+
+const AppLayout = lazy(() => import('@/pages/AppLayout'))
 
 const customTheme: ThemeConfig = {
     algorithm: theme.defaultAlgorithm,

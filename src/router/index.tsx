@@ -1,14 +1,8 @@
 import { Navigate, Outlet, RouteObject, RouterProvider, createBrowserRouter } from 'react-router-dom'
-import Error from '../pages/Error'
-import NotFound from '../pages/NotFound'
 import { lazy } from 'react'
-import Login from '../pages/login'
 import { userLoader } from '../pages/About/userLoader.ts'
-import App from '../App.tsx'
-import Layout1 from '@/pages/layout1/index.tsx'
 import loadable from '@loadable/component'
 import addonRoutes from '~react-pages'
-console.log('addonRoutes: ', addonRoutes);
 
 const modules: Record<string, () => Promise<any>> = import.meta.glob('../pages/**/*.tsx')
 
@@ -17,6 +11,9 @@ export const createLazyComponent = (path: string) => {
     return <Component key={path} />
 }
 
+const App = lazy(() => import('../App.tsx'))
+const Error = lazy(() => import('@/pages/Error.tsx'))
+const NotFound = lazy(() => import('@/pages/NotFound.tsx'))
 const About = lazy(() => import('../pages/About/index.tsx'))
 const About1 = lazy(() => import('../pages/About/About1.tsx'))
 const Home = lazy(() => import('../pages/Home/index'))
@@ -62,7 +59,7 @@ const AntdPage = loadable(
 export const routes: RouteObject[] = [
     {
         path: '/login',
-        element: <Login />,
+        element: <AsyncPage page='login' />,
         handle: {
             meta: {
                 title: '登录页'
@@ -133,7 +130,7 @@ export const routes: RouteObject[] = [
             },
             {
                 path: 'layout',
-                element: <Layout1 />,
+                element: <AsyncPage page='layout1' />,
                 children: [
                     {
                         index: true,
