@@ -1,4 +1,3 @@
-import './styles.css'
 import { useLocation, useMatches, useNavigate } from 'react-router-dom'
 import { lazy, useContext, useEffect } from 'react'
 import { GlobalContext } from './utils/GlobalContext'
