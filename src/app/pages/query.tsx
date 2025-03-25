@@ -1,7 +1,17 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { Tabs, type TabsProps } from 'antd'
 import { Outlet, useNavigate } from 'react-router-dom'
+import { fetchUsers } from './query/b'
 
 const MotionDemo = () => {
+    const queryClient = useQueryClient()
+    const prefetchUser = () => {
+        queryClient.prefetchQuery({
+            queryKey: ['users'],
+            queryFn: fetchUsers
+        })
+    }
+
     const navigate = useNavigate()
     const items: TabsProps['items'] = [
         {
@@ -18,6 +28,9 @@ const MotionDemo = () => {
         }
     ]
     const handleTabClick = (key: string) => {
+        // if (key === 'b') {
+        //     prefetchUser()
+        // }
         navigate(`/query/${key}`)
     }
     return (
