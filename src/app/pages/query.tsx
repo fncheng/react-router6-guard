@@ -1,10 +1,13 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { Tabs, type TabsProps } from 'antd'
-import { Outlet, useNavigate } from 'react-router-dom'
-import { fetchUsers } from './query/b'
+import { Outlet, useNavigate, useLocation } from 'react-router-dom'
+import { fetchUsers } from './query/api'
 
 const MotionDemo = () => {
     const queryClient = useQueryClient()
+    const location = useLocation()
+    const currentPath = location.pathname.split('/').pop() || ''
+
     const prefetchUser = () => {
         queryClient.prefetchQuery({
             queryKey: ['users'],
@@ -35,7 +38,7 @@ const MotionDemo = () => {
     }
     return (
         <>
-            <Tabs defaultActiveKey='' className='float-right' items={items} onTabClick={handleTabClick} />
+            <Tabs activeKey={currentPath} className='float-right' items={items} onTabClick={handleTabClick} />
             <Outlet />
         </>
     )

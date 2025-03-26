@@ -1,25 +1,37 @@
-import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
-
-interface UserItem {
-    id: number
-    name: string
-}
-
-export const fetchUsers = async () => {
-    const { data }: { data: UserItem[] } = await axios.get('https://jsonplaceholder.typicode.com/users')
-    return data
-}
+import { fetchComments } from './api'
+import { useEffect, useState } from 'react'
 
 export default function () {
-    const { data, error, isLoading } = useQuery({
-        queryKey: ['users'],
-        queryFn: fetchUsers,
-        staleTime: 1000 * 60 * 5 // 5 分钟内不重新请求
-    })
+    const [pageNum, setPageNum] = useState(1)
+    const [data, setData] = useState<any[]>([])
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [error, setError] = useState(false)
+
+    const getData = async () => {
+        setIsLoading(true)
+        try {
+            let res = await fetchComments({ postId: pageNum })
+            setData(res.data)
+        } catch (error) {
+            console.error(error)
+            setError(true)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+    useEffect(() => {
+        getData()
+    }, [pageNum])
+
+    console.log('render')
 
     if (isLoading) return <p>Loading...</p>
     if (error) return <p>Error loading posts</p>
 
-    return <ul>{data?.map((item) => <li key={item.id}>{item.name}</li>)}</ul>
+    return (
+        <div>
+            <ul>{data?.map((item) => <li key={item.id}>{item.name}</li>)}</ul>
+            <button onClick={() => setPageNum(pageNum + 1)}>{pageNum}</button>
+        </div>
+    )
 }
