@@ -1,5 +1,7 @@
 import { safeJSONParse } from '@/hooks/json'
+import { formatDuration, getFriendlyDuration } from '@/hooks/time'
 import { Flex, Grid, Text } from '@radix-ui/themes'
+import { intersection, intersectionWith, isEqual } from 'lodash-es'
 import { useEffect } from 'react'
 
 export default function Radix() {
@@ -12,8 +14,18 @@ export default function Radix() {
         }
     }
 
+    const start = 1712250000000 // 示例起始时间戳
+    const end = 1712336400000 // 示例结束时间戳
+
     const json = JSON.stringify(obj)
     console.log('json: ', json)
+
+    const o1 = [{ name: 'zs' }, { name: 'ls' }]
+    const o2 = [{ name: 'zs' }]
+
+    console.group(intersectionWith(o1, o2, isEqual))
+    console.group(isEqual({ name: 'zs' }, { name: 'zs' }))
+
     useEffect(() => {
         const a = safeJSONParse<typeof obj>(undefined)
         console.log('a', a?.name)
@@ -21,6 +33,9 @@ export default function Radix() {
 
     return (
         <div>
+            <h3>{formatDuration(start, end)}</h3>
+            <h3>{formatDuration(1733393241192, 1733393851011)}</h3>
+            <h3>{getFriendlyDuration(1733393241192, 1733393851011)}</h3>
             <h1 className='text-red-300'>Radix</h1>
             <div className='grid grid-cols-3 grid-rows-3'>
                 <div>01</div>
@@ -44,6 +59,7 @@ export default function Radix() {
                     <div>03</div>
                 </div>
             </Flex>
+            <div></div>
         </div>
     )
 }
