@@ -9,8 +9,8 @@ interface MarkdownPropType {
 
 const preprocessMarkdown = (markdown: string) => {
     return markdown
-        .replace(/\\\((.+?)\\\)/g, '$$$1$$') // \(...\) -> $...$
-        .replace(/\\\[((.|\n)+?)\\\]/g, `\n$$$1$$\n`) // \[...\] -> $$...$$
+    // .replace(/\\\((.+?)\\\)/g, '$$$1$$') // \(...\) -> $...$
+    // .replace(/\\\[((.|\n)+?)\\\]/g, `\n$$$1$$\n`) // \[...\] -> $$...$$
 }
 // const preprocessMarkdown = (markdown: string) => {
 //     return markdown

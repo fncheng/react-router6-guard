@@ -9,13 +9,12 @@ export default function () {
         getNextPageParam: (lastPage) => lastPage.postId + 1,
         staleTime: 1000 * 60 * 3 // 5 分钟内不重新请求
     })
-    console.log('data: ', data)
-
-    console.log('render')
 
     if (isPending) return <div>加载中...</div>
     if (isLoading) return <p>Loading...</p>
     if (error) return <p>Error loading posts</p>
+
+    console.log('c render')
 
     return (
         <div>

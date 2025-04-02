@@ -36,6 +36,8 @@ const MotionDemo = () => {
         // }
         navigate(`/query/${key}`)
     }
+
+    console.log('query render')
     return (
         <>
             <Tabs activeKey={currentPath} className='float-right' items={items} onTabClick={handleTabClick} />

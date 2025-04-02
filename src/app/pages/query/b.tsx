@@ -10,10 +10,10 @@ export default function () {
         staleTime: 1000 * 60 * 3 // 3 分钟内不重新请求
     })
 
-    console.log('render')
-
     if (isLoading) return <p>Loading...</p>
     if (error) return <p>Error loading posts</p>
+
+    console.log('b render')
 
     return (
         <div>

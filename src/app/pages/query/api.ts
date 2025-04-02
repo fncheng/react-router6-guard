@@ -25,8 +25,8 @@ export const fetchUsers = async () => {
     return data
 }
 
-export const fetchPosts = async () => {
-    const { data }: { data: PostItem[] } = await axios.get('https://jsonplaceholder.typicode.com/posts')
+export const fetchPosts = async ({ signal }: { signal: AbortSignal }) => {
+    const { data }: { data: PostItem[] } = await axios.get('https://jsonplaceholder.typicode.com/posts', { signal })
     return data
 }
 

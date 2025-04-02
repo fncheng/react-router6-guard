@@ -1,0 +1,1 @@
+export default '我们可以使用 KaTeX 来渲染数学公式，例如：\n\n行内公式：$E = mc^2$\n\n块级公式：\n$$\n\\int_{a}^{b} x^2 \\,dx = \\frac{b^3}{3} - \\frac{a^3}{3}\n$$\n\n更多复杂公式：\n$$\n\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}\n$$\n\n或者带分数的公式：\n$$\n f(x) = \\frac{1}{1 + e^{-x}}\n$$\n\n矩阵表示：\n$$\n A = \\begin{bmatrix} \n1 & 2 & 3 \\\\ \n4 & 5 & 6 \\\\ \n7 & 8 & 9 \n\\end{bmatrix}\n$$'
