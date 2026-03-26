@@ -60,15 +60,15 @@ const WsLayout = () => {
     const items: TabsProps['items'] = [
         {
             key: '',
-            label: 'query'
+            label: 'react-markdown'
         },
         {
             key: 'b',
-            label: 'position left'
+            label: 'marked处理'
         },
         {
             key: 'c',
-            label: 'transform translateX'
+            label: 'katex.renderToString'
         }
     ]
     const handleTabClick = (key: string) => {

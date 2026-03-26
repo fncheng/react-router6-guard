@@ -53,6 +53,7 @@ const Mobx: React.FC = observer(() => {
                 >
                     <Form.Item
                         name='username'
+                        tooltip='Please input your username!'
                         label='Username'
                         rules={[{ required: true, message: 'Please input your username!' }]}
                     >
